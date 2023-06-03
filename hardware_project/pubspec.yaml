@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.4
+  http: ^0.13.0
   awesome_dialog: ^2.2.1
   scaffold_gradient_background:
   shared_preferences: ^2.0.13

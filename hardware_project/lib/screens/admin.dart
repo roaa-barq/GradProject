@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../main.dart';
 import '../models/fetchData.dart';
 import '../models/packagesModel.dart';
+import 'package:flutter/foundation.dart';
 import 'profileAdmin.dart';
 
 class admin extends StatefulWidget {
@@ -18,11 +19,16 @@ class admin extends StatefulWidget {
 class _adminState extends State<admin> with SingleTickerProviderStateMixin {
   fetchData _fetchData = fetchData();
   late AnimationController _controller;
+  List<dynamic> nodeData = [];
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    _fetchData.fetchAllPackages();
+    setState(() {
+      fetch();
+    });
   }
 
   @override
@@ -145,7 +151,8 @@ class _adminState extends State<admin> with SingleTickerProviderStateMixin {
           SizedBox(
             height: MediaQuery.sizeOf(context).height / 20,
           ),
-          fetchAllPackages()
+          fetchAllPackages(),
+          // packagesCard("0000", "0000", "0000", "0000")
         ],
       )),
     );
@@ -169,9 +176,7 @@ class _adminState extends State<admin> with SingleTickerProviderStateMixin {
             ),
           ),
           CupertinoActionSheetAction(
-            onPressed: () {
-              LogoutAll();
-            },
+            onPressed: () {},
             child: const Text(
               'Logout',
               style:
@@ -181,7 +186,7 @@ class _adminState extends State<admin> with SingleTickerProviderStateMixin {
           CupertinoActionSheetAction(
             isDestructiveAction: true,
             onPressed: () {
-              Navigator.pop(context);
+              LogoutAll();
             },
             child: const Text('Cancel'),
           ),
@@ -280,24 +285,28 @@ class _adminState extends State<admin> with SingleTickerProviderStateMixin {
   }
 
   Widget fetchAllPackages() {
-    return FutureBuilder(
-        future: _fetchData.fetchAllPackages(),
-        builder: (context, snapchot) {
-          var packages = snapchot.data as List<packagesModel>;
-          return snapchot.data == null
-              ? Text("جاري التحميل")
-              : ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  // ignore: unnecessary_null_comparison
-                  itemCount: packages == null ? 0 : packages.length,
-                  itemBuilder: (context, index) {
-                    return packagesCard(
-                        packages[index].name,
-                        packages[index].status,
-                        packages[index].pin,
-                        packages[index].cod);
-                  });
-        });
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 70,
+      child: ListView.builder(
+        itemCount: nodeData.length,
+        itemBuilder: (context, index) {
+          final item = nodeData[index];
+          return packagesCard(nodeData[index].name, nodeData[index].status,
+              nodeData[index].cod, nodeData[index].pin);
+        },
+      ),
+    );
+  }
+
+  Future<void> fetch() async {
+    try {
+      final data = await fetchAllPackages();
+      setState(() {
+        nodeData = data as List;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }

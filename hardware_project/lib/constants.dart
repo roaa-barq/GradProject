@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const background = Color.fromRGBO(254, 254, 254, 1);
-const String baseUrl = "http://172.19.116.125:3080";
+const String baseUrl = "http://192.168.1.93:3080";
 
 class ThemeHelper {
   Icon? icon;

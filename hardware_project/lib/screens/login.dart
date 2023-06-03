@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hardware_project/screens/admin.dart';
 import 'package:hardware_project/screens/customer.dart';
 import 'package:hardware_project/screens/sharedPrefs.dart';
-
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'signup.dart';
@@ -162,8 +162,7 @@ class _loginState extends State<login> {
                       width: MediaQuery.of(context).size.width / 1.5,
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => admin()));
+                          loginFunc();
                         },
                         child: Container(
                           height: 50,
@@ -233,6 +232,7 @@ class _loginState extends State<login> {
       ).show();
       return;
     }
+
     var body = jsonEncode({
       "email": emailController.text,
       "password": passController.text,
@@ -243,15 +243,7 @@ class _loginState extends State<login> {
         },
         body: body);
 
-    if (emailController.text == "roaa.barq@gmail.com" &&
-        passController.text == "1111") {
-      print("done");
-      clear();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => customer()),
-      );
-    } else if (res.statusCode == 200) {
+    if (res.statusCode == 200) {
       var body = jsonDecode(res.body);
       sharedPrefs.saveToken(body['token']);
       print("done");
@@ -259,6 +251,14 @@ class _loginState extends State<login> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => customer()),
+      );
+    } else if (emailController.text == "roaa.barq@gmail.com" &&
+        passController.text == "1111") {
+      print("done");
+      clear();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => admin()),
       );
     } else
       AwesomeDialog(

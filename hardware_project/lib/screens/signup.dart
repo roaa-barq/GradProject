@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:hardware_project/screens/customer.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:scaffold_gradient_background/scaffold_gradient_background.dart';
@@ -211,10 +212,7 @@ class _signupState extends State<signup> {
                       width: MediaQuery.of(context).size.width / 1.4,
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => signup()));
+                          signUp();
                         },
                         child: Container(
                           height: 50,
@@ -336,7 +334,7 @@ class _signupState extends State<signup> {
           debugPrint('OnClcik');
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => login()),
+            MaterialPageRoute(builder: (context) => customer()),
           );
         },
         btnOkIcon: Icons.check_circle,

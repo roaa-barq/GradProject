@@ -35,8 +35,16 @@ class fetchData {
   }
 
   Future<List<packagesModel>> fetchAllPackages() async {
-    var res = await http.get(Uri.parse(baseUrl + "/AllPackages"));
+    print("111111111111");
+    print(baseUrl + "/AllPackages");
+    var res = await http.get(Uri.parse(baseUrl + "/AllPackages"), headers: {
+      // "Authorization": "Bearer " + prefs.get("token").toString(),
+      'Content-Type': 'application/json; charset=UTF-8'
+    });
+    print("222222");
+
     var body = jsonDecode(res.body) as List<dynamic>;
+    print("00000000");
     return body.map((packages) => packagesModel.fromJson(packages)).toList();
   }
 }
